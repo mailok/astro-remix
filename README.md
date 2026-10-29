@@ -47,21 +47,21 @@ import type { Handle } from 'remix/component';
 const style = css({ padding: '1rem', '&:hover': { color: 'rebeccapurple' } });
 
 export function Counter(handle: Handle<{ initialCount?: number }>) {
-	let count = handle.props.initialCount ?? 0;
+  let count = handle.props.initialCount ?? 0;
 
-	return () => (
-		<button
-			mix={[
-				style,
-				on('click', () => {
-					count++;
-					handle.update();
-				}),
-			]}
-		>
-			{count}
-		</button>
-	);
+  return () => (
+    <button
+      mix={[
+        style,
+        on('click', () => {
+          count++;
+          handle.update();
+        }),
+      ]}
+    >
+      {count}
+    </button>
+  );
 }
 ```
 
@@ -122,10 +122,10 @@ import react from '@astrojs/react';
 import remix from 'astro-remix';
 
 export default defineConfig({
-	integrations: [
-		remix({ include: ['**/components/remix/**'] }),
-		react({ include: ['**/components/react/**'] }),
-	],
+  integrations: [
+    remix({ include: ['**/components/remix/**'] }),
+    react({ include: ['**/components/react/**'] }),
+  ],
 });
 ```
 
