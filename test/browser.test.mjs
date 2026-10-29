@@ -202,19 +202,30 @@ for (const mode of ['dev', 'preview']) {
 			it('refreshes supported Remix components and CSS without resetting compatible state', async () => {
 				const source = new URL('src/components/Counter.tsx', basic);
 				const original = await readFile(source, 'utf8');
+				// Linux file watchers can drop a write that closely follows the previous one.
+				async function edit(content, applied) {
+					for (let attempt = 1; ; attempt++) {
+						await writeFile(source, content);
+						try {
+							return await page.waitForFunction(applied, undefined, { timeout: 3000 });
+						} catch (error) {
+							if (attempt === 5) throw error;
+						}
+					}
+				}
 				try {
 					await page.goto(server.url);
 					await ready('load');
 					await counter('load').getByRole('button').click();
-					await writeFile(
-						source,
+					await edit(
 						original.replace('{handle.props.name}</h2>', '{handle.props.name} refreshed</h2>'),
+						() =>
+							document.querySelector('[data-counter="load"] h2')?.textContent === 'load refreshed',
 					);
-					await page.getByRole('heading', { name: 'load refreshed', exact: true }).waitFor();
 					assert.equal(await counter('load').locator('output').textContent(), '3');
-					await writeFile(source, original.replace('rgb(102, 51, 153)', 'rgb(128, 0, 0)'));
 					await page.mouse.move(0, 0);
-					await page.waitForFunction(
+					await edit(
+						original.replace('rgb(102, 51, 153)', 'rgb(128, 0, 0)'),
 						() =>
 							getComputedStyle(document.querySelector('[data-counter="load"]')).color ===
 							'rgb(128, 0, 0)',
