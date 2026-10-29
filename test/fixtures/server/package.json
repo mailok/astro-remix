@@ -1,0 +1,11 @@
+{
+  "name": "remix-server-fixture",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "astro": "7.4.4",
+    "remix": "3.1.0",
+    "@astrojs/node": "11.1.9",
+    "astro-remix": "file:../../.."
+  }
+}

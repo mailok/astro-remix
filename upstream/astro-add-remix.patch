@@ -1,0 +1,109 @@
+===================================================================
+--- a/packages/astro/src/cli/add/index.ts
++++ b/packages/astro/src/cli/add/index.ts
+@@ -105,8 +105,9 @@
+ 					['--help', 'Show this help message.'],
+ 				],
+ 				'UI Frameworks': [
+ 					['react', 'astro add react'],
++					['remix', 'astro add remix'],
+ 					['preact', 'astro add preact'],
+ 					['vue', 'astro add vue'],
+ 					['svelte', 'astro add svelte'],
+ 					['solid-js', 'astro add solid-js'],
+
+===================================================================
+--- a/packages/astro/src/runtime/server/render/component.ts
++++ b/packages/astro/src/runtime/server/render/component.ts
+@@ -31,9 +31,9 @@
+ import { formatList, internalSpreadAttributes, renderElement, voidElementNames } from './util.js';
+ 
+ const needsHeadRenderingSymbol = Symbol.for('astro.needsHeadRendering');
+ const rendererAliases = new Map([['solid', 'solid-js']]);
+-const clientOnlyValues = new Set(['solid-js', 'react', 'preact', 'vue', 'svelte']);
++const clientOnlyValues = new Set(['solid-js', 'react', 'preact', 'vue', 'svelte', 'remix']);
+ 
+ function guessRenderers(componentUrl?: string): string[] {
+ 	const extname = componentUrl?.split('.').pop();
+ 	switch (extname) {
+@@ -42,17 +42,18 @@
+ 		case 'vue':
+ 			return ['@astrojs/vue'];
+ 		case 'jsx':
+ 		case 'tsx':
+-			return ['@astrojs/react', '@astrojs/preact', '@astrojs/solid-js', '@astrojs/vue (jsx)'];
++			return ['@astrojs/react', '@astrojs/preact', '@astrojs/solid-js', '@astrojs/remix', '@astrojs/vue (jsx)'];
+ 		case undefined:
+ 		default:
+ 			return [
+ 				'@astrojs/react',
+ 				'@astrojs/preact',
+ 				'@astrojs/solid-js',
+ 				'@astrojs/vue',
+ 				'@astrojs/svelte',
++				'@astrojs/remix',
+ 			];
+ 	}
+ }
+ 
+
+===================================================================
+--- a/packages/integrations/react/src/index.ts
++++ b/packages/integrations/react/src/index.ts
+@@ -204,9 +204,9 @@
+ 					injectScript('before-hydration', preamble);
+ 				}
+ 			},
+ 			'astro:config:done': ({ logger, config }) => {
+-				const knownJsxRenderers = ['@astrojs/react', '@astrojs/preact', '@astrojs/solid-js'];
++				const knownJsxRenderers = ['@astrojs/react', '@astrojs/preact', '@astrojs/solid-js', '@astrojs/remix'];
+ 				const enabledKnownJsxRenderers = config.integrations.filter((renderer) =>
+ 					knownJsxRenderers.includes(renderer.name),
+ 				);
+ 
+
+===================================================================
+--- a/packages/integrations/preact/src/index.ts
++++ b/packages/integrations/preact/src/index.ts
+@@ -100,9 +100,9 @@
+ 					injectScript('page', 'import "preact/debug";');
+ 				}
+ 			},
+ 			'astro:config:done': ({ logger, config }) => {
+-				const knownJsxRenderers = ['@astrojs/react', '@astrojs/preact', '@astrojs/solid-js'];
++				const knownJsxRenderers = ['@astrojs/react', '@astrojs/preact', '@astrojs/solid-js', '@astrojs/remix'];
+ 				const enabledKnownJsxRenderers = config.integrations.filter((renderer) =>
+ 					knownJsxRenderers.includes(renderer.name),
+ 				);
+ 
+
+===================================================================
+--- a/packages/integrations/solid/src/index.ts
++++ b/packages/integrations/solid/src/index.ts
+@@ -114,9 +114,9 @@
+ 					injectScript('page', 'import "solid-devtools";');
+ 				}
+ 			},
+ 			'astro:config:done': ({ logger, config }) => {
+-				const knownJsxRenderers = ['@astrojs/react', '@astrojs/preact', '@astrojs/solid-js'];
++				const knownJsxRenderers = ['@astrojs/react', '@astrojs/preact', '@astrojs/solid-js', '@astrojs/remix'];
+ 				const enabledKnownJsxRenderers = config.integrations.filter((renderer) =>
+ 					knownJsxRenderers.includes(renderer.name),
+ 				);
+ 
+
+===================================================================
+--- a/packages/integrations/vue/src/index.ts
++++ b/packages/integrations/vue/src/index.ts
+@@ -209,9 +209,9 @@
+ 			},
+ 			'astro:config:done': ({ logger, config }) => {
+ 				if (!options?.jsx) return;
+ 
+-				const knownJsxRenderers = ['@astrojs/react', '@astrojs/preact', '@astrojs/solid-js'];
++				const knownJsxRenderers = ['@astrojs/react', '@astrojs/preact', '@astrojs/solid-js', '@astrojs/remix'];
+ 				const enabledKnownJsxRenderers = config.integrations.filter((renderer) =>
+ 					knownJsxRenderers.includes(renderer.name),
+ 				);
+ 
+

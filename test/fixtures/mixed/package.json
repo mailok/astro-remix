@@ -1,0 +1,21 @@
+{
+  "name": "remix-mixed-fixture",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "astro": "7.4.4",
+    "remix": "3.1.0",
+    "@astrojs/react": "7.1.2",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "@astrojs/preact": "6.1.1",
+    "preact": "^11.0.1",
+    "@astrojs/solid-js": "7.1.2",
+    "solid-js": "^1.9.17",
+    "@astrojs/svelte": "9.1.2",
+    "svelte": "^5.57.2",
+    "@astrojs/vue": "7.1.2",
+    "vue": "^3.5.43",
+    "astro-remix": "file:../../.."
+  }
+}

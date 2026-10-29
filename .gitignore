@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.astro/
+test/fixtures/**/.astro/
+test/fixtures/**/dist/
+test-results/
+*.tgz

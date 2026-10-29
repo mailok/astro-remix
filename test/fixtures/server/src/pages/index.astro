@@ -1,0 +1,5 @@
+---
+import { RequestCard } from '../components/RequestCard';
+const color = Astro.url.searchParams.get('color') === 'blue' ? 'blue' : 'red';
+---
+<html lang="en"><head><meta charset="utf-8" /><title>SSR isolation</title></head><body><RequestCard color={color} /></body></html>

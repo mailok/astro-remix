@@ -1,0 +1,11 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import { Counter } from '../components/Counter';
+---
+<html lang="en">
+  <head><meta charset="utf-8" /><title>Other page</title><ClientRouter /></head>
+  <body>
+    <a href="/">Home</a>
+    <Counter client:load name="other" initialCount={8} />
+  </body>
+</html>

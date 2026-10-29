@@ -1,0 +1,25 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import { Counter } from '../components/Counter';
+import { Slots } from '../components/Slots';
+---
+<html lang="en">
+  <head><meta charset="utf-8" /><title>Remix islands</title><ClientRouter /></head>
+  <body>
+    <a href="/other/">Other page</a>
+    <Counter name="static" initialCount={1} />
+    <Counter client:load name="load" initialCount={2} />
+    <Counter client:idle name="idle" initialCount={3} />
+    <Counter client:media="(min-width: 1200px)" name="media" initialCount={4} />
+    <Counter client:only="astro-remix" name="only" initialCount={5}>
+      <p slot="fallback">Loading</p>
+    </Counter>
+    <Slots client:load>
+      <h3 slot="header-title">Named slot</h3>
+      <Counter client:load name="nested" initialCount={6} />
+    </Slots>
+    <Slots><p>Static slot</p></Slots>
+    <div style="height: 2000px"></div>
+    <Counter client:visible name="visible" initialCount={7} />
+  </body>
+</html>
