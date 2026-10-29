@@ -1,12 +1,12 @@
 name: Release
 on:
-  release:
-    types: [published]
+  workflow_dispatch:
 permissions:
   contents: read
   id-token: write
 jobs:
   publish:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
